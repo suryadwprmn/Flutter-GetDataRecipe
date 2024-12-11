@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:resepmakanan_5b/services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -33,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               emailController.text, passwordController.text);
           if (Response["status"]) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text("message")));
+                .showSnackBar(const SnackBar(content: Text("message")));
                 Navigator.pushReplacementNamed(context, '/home');
           } else {
             setState(() {
@@ -48,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Password don't match")));
+            .showSnackBar(const SnackBar(content: Text("Password don't match")));
       }
     }
   }
@@ -57,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register"),
+        title: const Text("Register"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -119,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: () {
                     register(context);
                   },
-                  child: Text("Register"))
+                  child: const Text("Register"))
             ],
           ),
         ),

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:resepmakanan_5b/models/recipe_model.dart';
 import 'package:resepmakanan_5b/services/recipe_service.dart';
-import 'package:resepmakanan_5b/services/session_service.dart';
+import 'package:resepmakanan_5b/ui/recipe_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  RecipeService _recipeService = RecipeService();
+  final RecipeService _recipeService = RecipeService();
   late Future<List<RecipeModel>> futureRecipes;
 
   @override
@@ -23,13 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: const Text("Home"),
       ),
       body: FutureBuilder<List<RecipeModel>>(
           future: futureRecipes,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
@@ -37,12 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text("Error load data ${snapshot.error}"),
               );
             } else if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: Text("Tidak ada data"),
               );
             } else {
               return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
@@ -68,6 +70,7 @@ class CustomCard extends StatelessWidget {
   int comments_count;
   int id;
   CustomCard({
+    super.key,
     required this.id,
     required this.title,
     required this.img,
@@ -79,31 +82,37 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // nagitor push
-        print(id);
+        // Pindah ke halaman detail
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => RecipeDetailScreen(recipeId: id)));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Column(
           children: [
             Image.network(
-              "$img",
+              img,
               fit: BoxFit.cover,
               width: double.infinity,
               height: 100,
             ),
             Text(
-              "$title",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Row(
-                  children: [Icon(Icons.star), Text("$likes_count")],
+                  children: [const Icon(Icons.star), Text("$likes_count")],
                 ),
                 Row(
-                  children: [Icon(Icons.comment), Text("$comments_count")],
+                  children: [
+                    const Icon(Icons.comment),
+                    Text("$comments_count")
+                  ],
                 ),
               ],
             )

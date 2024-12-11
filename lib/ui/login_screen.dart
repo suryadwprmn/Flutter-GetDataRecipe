@@ -23,32 +23,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login(context) async {
     if (FormKey.currentState!.validate()) {
-        try {
-          final Response = await authService.login(
-              emailController.text, passwordController.text);
-          if (Response["status"]) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text("message")));
-            Navigator.pushReplacementNamed(context, '/home');
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(Response["message"])));
-          }
-        } catch (e) {
+      try {
+        final Response = await authService.login(
+            emailController.text, passwordController.text);
+        if (Response["status"]) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Failed: $e")));
+              .showSnackBar(const SnackBar(content: Text("message")));
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(Response["message"])));
         }
-      } else {
+      } catch (e) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Password don't match")));
+            .showSnackBar(SnackBar(content: Text("Failed: $e")));
       }
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Password don't match")));
     }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: const Text("Login"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -85,10 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     login(context);
                   },
-                  child: Text("login")),
-                  TextButton(onPressed: (){
+                  child: const Text("login")),
+              TextButton(
+                  onPressed: () {
                     Navigator.pushNamed(context, '/register');
-                  }, child: Text("TIdak punya akun? silahkan register"))
+                  },
+                  child: const Text("TIdak punya akun? silahkan register"))
             ],
           ),
         ),
@@ -96,4 +98,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
